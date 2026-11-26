@@ -100,8 +100,8 @@ if (sky) {
 }
 
 /* ---------- hero title decode (the one orchestrated moment) ---------- */
-const sym = '⟁◬☉△▽◇⌖✶⊙⏳';
-$$('[data-decode]').forEach((el, idx) => {
+const sym = '⟁◬☉△▽◇⌖✶⊙⋈';
+const runDecode = () => $$('[data-decode]').forEach((el, idx) => {
   const final = el.textContent; if (RM) return;
   el.setAttribute('aria-label', final);
   const len = final.length, start = performance.now() + 250 + idx * 380, dur = 1300;
@@ -117,6 +117,50 @@ $$('[data-decode]').forEach((el, idx) => {
   requestAnimationFrame(tick);
   setTimeout(() => { el.textContent = final; }, 250 + idx * 380 + dur + 400);
 });
+const html = document.documentElement;
+if (html.classList.contains('intro-on') && $('#intro')) addEventListener('a27:intro-done', runDecode, { once: true });
+else runDecode();
+
+/* ---------- intro (eye video, once per visit) ---------- */
+const intro = $('#intro');
+if (intro && html.classList.contains('intro-on')) {
+  const v = $('.intro-v', intro), line = $('.intro-line span', intro), enter = $('.intro-enter', intro), skip = $('.intro-skip', intro);
+  const portrait = innerWidth / innerHeight < 0.9;
+  const src = ROOT + 'media/' + (portrait ? 'intro_mobile.mp4' : 'intro_desktop.mp4');
+  const poster = ROOT + 'media/' + (portrait ? 'poster_mobile.webp' : 'poster_desktop.webp');
+  let done = false, revealed = false;
+  const final = line.textContent;
+  const reveal = () => {
+    if (revealed) return; revealed = true; intro.classList.add('lit');
+    if (!RM) { const t0 = performance.now(), len = final.length;
+      const tick = now => { const k = (now - t0) / 1500; let o = '';
+        for (let i = 0; i < len; i++) { const c = final[i]; o += (c === ' ' || k > i / len * .8 + .2) ? c : sym[(Math.random() * sym.length) | 0]; }
+        line.textContent = k >= 1 ? final : o; if (k < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick); }
+    setTimeout(() => { try { enter.focus({ preventScroll: true }); } catch (e) {} }, 900);
+  };
+  const finish = () => {
+    if (done) return; done = true;
+    try { sessionStorage.setItem('a27_intro', '1'); } catch (e) {}
+    html.classList.add('intro-leaving'); intro.classList.add('out');
+    setTimeout(() => dispatchEvent(new Event('a27:intro-done')), 450);
+    setTimeout(() => { html.classList.remove('intro-on', 'intro-leaving'); intro.remove(); }, 1500);
+  };
+  v.poster = poster; v.src = src; v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
+  intro.classList.add('started');
+  const p = v.play();
+  if (p && p.catch) p.then(() => intro.classList.add('playing')).catch(() => { v.removeAttribute('src'); v.load(); reveal(); });
+  v.addEventListener('timeupdate', () => { if (v.duration && v.currentTime > v.duration - 3.0) reveal(); });
+  v.addEventListener('ended', () => { reveal(); setTimeout(finish, 4500); });
+  v.addEventListener('error', reveal);
+  setTimeout(reveal, 14000);                 // safety net if the video stalls
+  enter.addEventListener('click', finish); skip.addEventListener('click', finish);
+  addEventListener('keydown', e => { if (!done && (e.key === 'Escape' || (e.key === 'Enter' && revealed))) finish(); });
+}
+$$('.replay-intro').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault(); try { sessionStorage.removeItem('a27_intro'); } catch (er) {}
+  location.href = ROOT + 'index.html'; if (/index\.html$|\/$/.test(location.pathname)) location.reload();
+}));
 
 /* ---------- orbit of symbols ---------- */
 const orbit = $('#orbit'), reading = $('#reading');

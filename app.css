@@ -243,3 +243,24 @@ footer a{color:var(--bone)}
 .theory .veil{width:7rem;border-radius:10px;flex:none}
 .theory .veil img{width:100%}
 @media(max-width:760px){.theory .veil{display:none}}
+
+/* ---------- intro (eye video) ---------- */
+.intro{display:none}
+.intro-on .intro{display:block;position:fixed;inset:0;z-index:100;background:#000;overflow:hidden;transition:opacity 1.3s cubic-bezier(.4,0,.2,1),filter 1.3s cubic-bezier(.4,0,.2,1),transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.intro-on body{overflow:hidden}
+.intro-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000 center/cover no-repeat;transform:scale(1.02);transition:transform 9s cubic-bezier(.2,.6,.2,1)}
+.intro.playing .intro-v{transform:scale(1.09)}
+.intro-shade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 40%,rgba(0,0,0,.72) 100%),linear-gradient(to top,rgba(0,0,0,.85),transparent 42%)}
+.intro-ui{position:absolute;left:0;right:0;bottom:max(9vh,calc(env(safe-area-inset-bottom) + 48px));display:flex;flex-direction:column;align-items:center;gap:1.6rem;padding:0 1.2rem;text-align:center}
+.intro-line{margin:0;font:400 clamp(2.3rem,1.4rem + 4.5vw,5.6rem)/1 var(--serif);letter-spacing:-.01em;color:var(--bone);opacity:0;filter:blur(12px);transform:translateY(12px);transition:opacity 1.4s ease,filter 1.6s ease,transform 1.6s cubic-bezier(.2,.7,.2,1);text-shadow:0 0 40px rgba(217,167,74,.35)}
+.intro-line span{display:inline-block}
+.intro.lit .intro-line{opacity:1;filter:blur(0);transform:none}
+.intro-enter{opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .9s ease .7s,transform .9s ease .7s,color .35s,border-color .35s,box-shadow .45s}
+.intro.lit .intro-enter{opacity:1;transform:none;pointer-events:auto}
+.intro-skip{position:absolute;top:max(1.2rem,env(safe-area-inset-top));right:1.2rem;background:rgba(7,5,10,.4);backdrop-filter:blur(6px);border:1px solid rgba(236,229,214,.22);color:rgba(236,229,214,.8);border-radius:999px;padding:.55rem 1rem;font:500 .85rem var(--sans);cursor:pointer;opacity:0;transition:opacity .6s ease 1.2s,border-color .25s,color .25s}
+.intro.started .intro-skip{opacity:1}
+.intro-skip:hover{border-color:var(--gold);color:var(--gold2)}
+.intro.out{opacity:0;filter:blur(22px) brightness(1.5);transform:scale(1.08);pointer-events:none}
+.intro-on main,.intro-on .bar{filter:blur(16px);opacity:.4;transition:filter 1.4s cubic-bezier(.4,0,.2,1),opacity 1.4s ease}
+.intro-on.intro-leaving main,.intro-on.intro-leaving .bar{filter:none;opacity:1}
+@media (prefers-reduced-motion:reduce){.intro-on .intro{display:none}.intro-on main,.intro-on .bar{filter:none;opacity:1}.intro-on body{overflow:auto}}
