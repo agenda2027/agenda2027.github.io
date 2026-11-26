@@ -209,18 +209,21 @@ $$('.tcard').forEach(c => {
 /* ---------- archive filters ---------- */
 const arch = $('#archive');
 if (arch) {
-  let ser = 'all', q = '';
+  let ser = 'all', mode = 'all', q = '';
   const items = $$('.item', arch), empty = $('#empty');
   const apply = () => {
     let shown = 0;
     items.forEach(it => {
-      const ok = (ser === 'all' || it.dataset.series === ser) && (!q || it.dataset.text.includes(q));
+      const ok = (ser === 'all' || it.dataset.series === ser) && (mode === 'all' || it.dataset.mode === mode) && (!q || it.dataset.text.includes(q));
       it.hidden = !ok; if (ok) shown++;
     });
     empty.hidden = shown > 0;
   };
-  $$('.chip').forEach(ch => ch.addEventListener('click', () => {
-    ser = ch.dataset.series; $$('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === ch))); apply();
+  $$('.chip[data-series]').forEach(ch => ch.addEventListener('click', () => {
+    ser = ch.dataset.series; $$('.chip[data-series]').forEach(c => c.setAttribute('aria-pressed', String(c === ch))); apply();
+  }));
+  $$('.chip[data-mode]').forEach(ch => ch.addEventListener('click', () => {
+    mode = ch.dataset.mode; $$('.chip[data-mode]').forEach(c => c.setAttribute('aria-pressed', String(c === ch))); apply();
   }));
   const inp = $('#q'); inp && inp.addEventListener('input', () => { q = inp.value.trim().toLowerCase(); apply(); });
 }

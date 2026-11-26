@@ -264,3 +264,12 @@ footer a{color:var(--bone)}
 .intro-on main,.intro-on .bar{filter:blur(16px);opacity:.4;transition:filter 1.4s cubic-bezier(.4,0,.2,1),opacity 1.4s ease}
 .intro-on.intro-leaving main,.intro-on.intro-leaving .bar{filter:none;opacity:1}
 @media (prefers-reduced-motion:reduce){.intro-on .intro{display:none}.intro-on main,.intro-on .bar{filter:none;opacity:1}.intro-on body{overflow:auto}}
+
+.filters.labels{margin-top:-1.2rem}
+.filters .lab{font:500 .8rem var(--sans);color:var(--ash,#8a8390);margin-right:.2rem}
+.chip .dot{display:inline-block;margin-right:.45rem;vertical-align:middle}
+.chip[aria-pressed="true"] .dot{outline:1px solid var(--void)}
+.method h2{margin-top:2.4rem}
+.method table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.95rem}
+.method th,.method td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+.method th{color:var(--gold);font-weight:600}
